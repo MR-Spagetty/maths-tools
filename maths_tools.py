@@ -9,7 +9,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Displacement:
-    _meters = None
+    _meters: float | int = None
 
     @property
     def nanometers(self):
@@ -81,9 +81,13 @@ class Displacement:
             raise TypeError("'new_value' must be a float or int")
         self._meters = float(new_value * 9.4605284e15)
 
+
+def circle_circumference(radius: Displacement):
+    return Displacement(2 * math.pi * radius)
+
 @dataclass
 class Area:
-    _meters = None
+    _meters: float | int = None
 
     @property
     def nanometers(self):
@@ -155,9 +159,18 @@ class Area:
             raise TypeError("'new_value' must be a float or int")
         self._meters = float(new_value * (9.4605284e15 ** 2))
 
+
+def rectangular_area(length: Displacement, width: Displacement) -> Area:
+    return Area(length.meters * width.meters)
+
+
+def circular_area(radius: Displacement) -> Area:
+    return Area(math.pi * (radius.meters ** 2))
+
+
 @dataclass
 class Volume:
-    _meters = None
+    _meters: float | int = None
 
     @property
     def nanometers(self):
@@ -229,3 +242,12 @@ class Volume:
             raise TypeError("'new_value' must be a float or int")
         self._meters = float(new_value * (9.4605284e15 ** 3))
 
+
+def cuboid_volume(length: Displacement,
+                  width: Displacement,
+                  depth: Displacement) -> Volume:
+    return Volume(math.prod([length.meters, width.meters, depth.meters]))
+
+
+def sphere_volume(radius: Displacement) -> Volume:
+    return Volume(math.prod([4/3, math.pi, radius.meters ** 3]))
